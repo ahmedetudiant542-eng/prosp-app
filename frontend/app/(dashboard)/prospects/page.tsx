@@ -99,7 +99,7 @@ export default function ProspectsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <Link href={`/dashboard/prospects/${p.id}`} className="text-blue-600 hover:text-blue-800"><ExternalLink className="h-4 w-4" /></Link>
+                      <Link href={`/prospects/${p.id}`} className="text-blue-600 hover:text-blue-800"><ExternalLink className="h-4 w-4" /></Link>
                       <button onClick={() => deleteMutation.mutate(p.id)} className="text-red-400 hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
                     </div>
                   </td>

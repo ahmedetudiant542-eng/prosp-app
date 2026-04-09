@@ -7,11 +7,11 @@ import { useAuth } from "@/hooks/use-auth";
 
 const nav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/prospects", label: "Prospects", icon: Users },
-  { href: "/dashboard/campaigns", label: "Campaigns", icon: Megaphone },
-  { href: "/dashboard/analytics", label: "Analytics", icon: BarChart2 },
-  { href: "/dashboard/inbox", label: "Inbox", icon: Inbox },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+  { href: "/prospects", label: "Prospects", icon: Users },
+  { href: "/campaigns", label: "Campaigns", icon: Megaphone },
+  { href: "/analytics", label: "Analytics", icon: BarChart2 },
+  { href: "/inbox", label: "Inbox", icon: Inbox },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function Sidebar() {

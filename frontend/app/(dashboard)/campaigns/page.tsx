@@ -27,7 +27,7 @@ export default function CampaignsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Campaigns</h1>
-        <Link href="/dashboard/campaigns/new" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+        <Link href="/campaigns/new" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
           <Plus className="h-4 w-4" /> New Campaign
         </Link>
       </div>
@@ -63,7 +63,7 @@ export default function CampaignsPage() {
       ) : (
         <div className="text-center py-16">
           <p className="text-gray-400 mb-4">No campaigns yet</p>
-          <Link href="/dashboard/campaigns/new" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+          <Link href="/campaigns/new" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
             <Plus className="h-4 w-4" /> Create your first campaign
           </Link>
         </div>
