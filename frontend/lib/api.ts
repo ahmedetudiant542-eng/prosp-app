@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_htoken");
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
@@ -26,7 +26,7 @@ api.interceptors.response.use(
           return api(error.config);
         } catch {
           localStorage.clear();
-          window.location.href = "/auth/login";
+          window.location.href = "/login";
         }
       }
     }
