@@ -6,6 +6,7 @@ export interface User {
   role: string;
   organizationId?: string;
   createdAt: string;
+  provider?: string;
 }
 
 export interface Prospect {
