@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String         @id @default(uuid())
+  email            String         @unique
+  name             String
+  password         String?
+  avatar           String?
+  provider         String?
+  providerId       String?
+  refreshToken     String?
+  role             Role           @default(USER)
+  organizationId   String?
+  organization     Organization?  @relation(fields: [organizationId], references: [id])
+  prospects        Prospect[]
+  campaigns        Campaign[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@map("users")
+}
+
+model Organization {
+  id          String     @id @default(uuid())
+  name        String
+  domain      String?
+  logo        String?
+  users       User[]
+  prospects   Prospect[]
+  campaigns   Campaign[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("organizations")
+}
+
+model Prospect {
+  id             String          @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String?
+  phone          String?
+  company        String?
+  jobTitle       String?
+  linkedinUrl    String?
+  website        String?
+  status         ProspectStatus  @default(NEW)
+  source         String?
+  notes          String?
+  tags           String[]
+  customFields   Json?
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  organizationId String?
+  organization   Organization?   @relation(fields: [organizationId], references: [id])
+  campaigns      CampaignProspect[]
+  activities     Activity[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@map("prospects")
+}
+
+model Campaign {
+  id             String           @id @default(uuid())
+  name           String
+  description    String?
+  status         CampaignStatus   @default(DRAFT)
+  type           CampaignType     @default(EMAIL)
+  sequences      Sequence[]
+  prospects      CampaignProspect[]
+  userId         String
+  user           User             @relation(fields: [userId], references: [id])
+  organizationId String?
+  organization   Organization?    @relation(fields: [organizationId], references: [id])
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@map("campaigns")
+}
+
+model CampaignProspect {
+  id           String    @id @default(uuid())
+  campaignId   String
+  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  prospectId   String
+  prospect     Prospect  @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  status       String    @default("pending")
+  currentStep  Int       @default(0)
+  enrolledAt   DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([campaignId, prospectId])
+  @@map("campaign_prospects")
+}
+
+model Sequence {
+  id         String         @id @default(uuid())
+  name       String
+  order      Int
+  type       SequenceType
+  delay      Int            @default(0)
+  delayUnit  String         @default("hours")
+  subject    String?
+  content    String
+  campaignId String
+  campaign   Campaign       @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@map("sequences")
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  type        String
+  description String
+  metadata    Json?
+  prospectId  String
+  prospect    Prospect @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@map("activities")
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum ProspectStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  INTERESTED
+  NOT_INTERESTED
+  CONVERTED
+  ARCHIVED
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum CampaignType {
+  EMAIL
+  LINKEDIN
+  WHATSAPP
+  MULTICHANNEL
+}
+
+enum SequenceType {
+  EMAIL
+  LINKEDIN_CONNECTION
+  LINKEDIN_MESSAGE
+  WHATSAPP
+  WAIT
+}

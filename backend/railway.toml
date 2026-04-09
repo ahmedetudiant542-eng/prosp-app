@@ -1,0 +1,9 @@
+[build]
+dockerfilePath = "Dockerfile"
+buildTarget = "production"
+
+[deploy]
+preStartCommand = "npx prisma migrate deploy"
+startCommand = "node dist/main"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
